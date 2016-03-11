@@ -16,15 +16,13 @@ public class PackageProduct
         ProductId = productId;
     }
     public PackageProduct() { }
-
     //TODO deal with the bidirectionality of this table
     public static PackageProduct getByPackageId(int id)
     {
         HashMap join = new HashMap();
         join.put(TableName + "." + "PackageId",id);
-        //this is RIDICULOUS... Figure out joins
-
-        //join.put(Product.TableName + "." + "ProductId",TableName+"."+"ProductId");
+        //this is RIDICULOUS... Figure out join
+        join.put(Product.TableName + "." + "ProductId",TableName+"."+"ProductId");
         Factory factory = new Factory(PackageProduct.class);
         factory.getSelectWhere(join);
         PackageProduct packprod = (PackageProduct) factory.makeEntity().firstElement();

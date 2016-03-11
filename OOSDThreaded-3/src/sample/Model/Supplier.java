@@ -15,6 +15,7 @@ public class Supplier
         SupplierId = supplierId;
     }
 
+
     public Supplier() { }
 
     public static Supplier getById(int supplierId)
@@ -35,8 +36,6 @@ public class Supplier
         Vector suppliers = factory.makeEntity();
         return suppliers;
     }
-
-
 
     private String SupName;
     public String getSupName() { return SupName; }

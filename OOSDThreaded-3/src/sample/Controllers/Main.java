@@ -5,7 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.Model.Agent;
+import sample.Model.*;
+import sample.Model.Package;
+import java.util.Vector;
 
 public class Main extends Application {
 
@@ -20,8 +22,21 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
-        Agent agent = Agent.getById(1);
-        System.out.println(agent.getAgtFirstName());
+        /*Vector<Agent> agents = Agent.getAll();
+        for(Agent agent : agents)
+        System.out.println(agent.getAgtFirstName()+" "+ agent.getAgtLastName());
+        Factory fact = new Factory(Product.class);
+        HashMap join = new HashMap();
+        join.put(PackageProduct.TableName + "." + "PackageId",1);
+        join.put(Product.TableName + "." + "ProductId",PackageProduct.TableName+"."+"ProductId");
+        fact.getSelectWhere(join);*/
+
+        Vector<Agent> agents = Agent.getAll();
+        for (Agent prod : agents)
+        {
+            System.out.println(prod.getAgtFirstName()+"- -"+prod.getAgtMiddleInitial()+"- -"+ prod.getAgtLastName() );
+        }
         //launch(args);
     }
+
 }

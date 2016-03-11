@@ -42,6 +42,13 @@ public class Customer {
         return myCust;
     }
 
+    public static Vector<Customer> getWithoutAgent()
+    {
+        HashMap join = new HashMap();
+        join.put("AgentId",null);
+        return new Vector<Customer>();
+    }
+
     public static Vector<Customer> getAll()
     {
         Factory factory = new Factory(Customer.class);

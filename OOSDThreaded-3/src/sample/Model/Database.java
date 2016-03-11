@@ -49,13 +49,14 @@ public class Database {
             while (result.next())
             {
                 HashMap rowData = new HashMap();
+
                 //constructs Key Values for the current row
                 for (int i = 1; i <= result.getMetaData().getColumnCount(); i++)
                 {
                     result.getObject(i);
-                    if(result.wasNull()){
-
-                        rowData.put(metaData.getColumnLabel(i), "null");
+                    if(result.wasNull())
+                    {
+                        rowData.put(metaData.getColumnLabel(i), null);
                     }
                     else if (result.getObject(i).getClass() == BigDecimal.class)
                     {

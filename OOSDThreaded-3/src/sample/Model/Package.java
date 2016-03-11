@@ -38,6 +38,25 @@ public class Package
         return pack;
     }
 
+    public Vector<Product> getProducts()
+    {
+        Vector<Product> products = new Vector();
+        Factory packageProductfactory = new Factory(PackageProduct.class);
+        HashMap join = new HashMap();
+        join.put("PackageId",this.getPackageId());
+        packageProductfactory.getSelectWhere(join);
+        Vector<PackageProduct> packprods = packageProductfactory.makeEntity();
+        if(packprods.isEmpty())
+        {
+            return products;
+        }
+        for (PackageProduct packprod : packprods)
+        {
+            products.add(Product.getById(packprod.getProductId()));
+        }
+        return products;
+    }
+
     public static Vector<Package> getAll()
     {
         Factory factory = new Factory(Package.class);
@@ -49,7 +68,6 @@ public class Package
     /*
     Fields with Get Set Methods
      */
-
     private int PackageId;
     public int getPackageId() { return PackageId; }
     public void setPackageId(int packageId) { PackageId = packageId; }

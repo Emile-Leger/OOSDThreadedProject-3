@@ -1,8 +1,8 @@
 package sample.Model;
 
-import sample.Model.Database;
+import sun.management.*;
+
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
@@ -14,6 +14,7 @@ public class Factory
     private final String  SELECT = "SELECT * FROM ";
     private final String WHERE = " WHERE ";
     private final String TableName = "TableName";
+    private final String AND = " AND";
     private Vector<HashMap> resultData;
     private Class dataClass;
     private String SQL;
@@ -22,7 +23,10 @@ public class Factory
     {
         this.dataClass = c;
     }
-
+    /*
+    These methods deal with building the SQL string that will be sent to the database.
+    TODO evaluate the placement of them in this class
+    */
     public void getSelectAll()
     {
         SQL = SELECT;
@@ -36,15 +40,29 @@ public class Factory
         catch (NoSuchFieldException e){ e.printStackTrace(); }
         catch (IllegalAccessException e){ e.printStackTrace(); }
     }
-    /*
-    Build a list of Objects of the Type specified by the 'Class' property of this class.
-     */
 
+    //Adds a where clause to the active SQL statement
+    public String getSelectWhere(HashMap where)
+    {
+        String Where = where.toString().replace("{" , "").replace("}" , "").replace("," , AND);
+        getSelectAll();
+        SQL += WHERE + Where;
+        return SQL;
+    }
+    /*
+    These methods deal with building objects. for this to work, the class being instatiated must have a
+    set of fields that correspond directly to the table in the database they represent. Classes that do not follow
+    this structure will be instantiated but will break this code when their fields are set.
+     */
     public Vector makeEntity() {
 
         Database database = new Database();
         Vector objects = new Vector();
         resultData = database.Select(SQL);//submit the SQL
+
+        if (resultData.isEmpty())//No results, return empty list
+            return objects;
+
         ArrayList<Field> fields = getFields();//Retrieve references to all fields of the currently selected class
         for (HashMap map : resultData)//iterate one row of data
         {
@@ -53,22 +71,21 @@ public class Factory
                 Object myObj = dataClass.newInstance();
                 for (Field field : fields)
                 {
-                    if (field.getName() != TableName)
+                    if (field.getName() != TableName)//all other fields on data classes instantiated here will hold data
                     {
                         //get the name on the field
                         String fieldName = field.getName();
-                        field.set(myObj, map.get(fieldName));
+                        field.set(myObj, map.get(fieldName));//set the field to the appropriate value in the Data HashMap
                     }
                 }
                 objects.add(myObj);
             }
             catch (InstantiationException e) { e.printStackTrace(); }
             catch (IllegalAccessException e) { e.printStackTrace(); }
-
         }
         return objects;
     }
-
+    //retrieves each field of the assigned Class and returns the accessible version of each in an array.
     private ArrayList<Field> getFields()
     {
         ArrayList<Field> fields = new ArrayList<Field>();
@@ -86,23 +103,5 @@ public class Factory
             }
         }
         return fields;
-    }
-
-    //Adds a where clause to the active SQL statement
-    public void getSelectWhere(HashMap where)
-    {
-        if (where.size() > 1)
-        {
-
-        }
-        String Where = where.toString().replace("{","").replace("}","");
-        getSelectAll();
-        SQL += WHERE+Where;
-        //return SQL;
-    }
-
-    public void getAdditionalWhere(HashMap where)
-    {
-
     }
 }
