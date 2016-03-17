@@ -9,7 +9,7 @@ public class Package
     public static final String TableName = "packages";
 
 
-    /*
+    /**
     Constructors
      */
     public Package() {}
@@ -24,10 +24,15 @@ public class Package
         PkgStartDate = pkgStartDate;
         PkgName = pkgName;
     }
-    /*
+    /**
     Data Access Methods
      */
 
+    public static int add(Agent agent)
+    {
+        Factory factory = new Factory(Agent.class);
+        return factory.Deconstruct(agent);
+    }
     public static Package getById(int PackageId)
     {
         HashMap join = new HashMap();
@@ -39,6 +44,7 @@ public class Package
     }
 
     public Vector<Product> getProducts()
+
     {
         Vector<Product> products = new Vector();
         Factory packageProductfactory = new Factory(PackageProduct.class);
@@ -65,7 +71,7 @@ public class Package
         return packages;
     }
 
-    /*
+    /**
     Fields with Get Set Methods
      */
     private int PackageId;

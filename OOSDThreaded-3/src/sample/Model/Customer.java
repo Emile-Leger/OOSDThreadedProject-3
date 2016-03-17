@@ -1,18 +1,21 @@
 package sample.Model;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 import java.util.HashMap;
 import java.util.Vector;
 
 public class Customer {
+
     public final static String TableName = "customers";
 
-    /*
-    * constructor with each field provided
-    * */
+    /**
+    Constructors
+    */
 
     public Customer(int customerId, String custFirstName, String custLastName, String custEmail,
                     String custHomePhone, String custBusPhone, String custAddress,String custPostal, String custCity,
-                    String custCountry, String custProv, int agentId, String password, String userName)
+                    String custCountry, String custProv, Integer agentId, String password, String userName)
         {
             CustomerId = customerId;
             CustFirstName = custFirstName;
@@ -32,8 +35,11 @@ public class Customer {
 
     public Customer() { }
 
-    public static Customer getById(int CustomerId)
-    {
+    /**
+    Data Access Methods
+     */
+
+    public static Customer getById(Integer CustomerId){
         HashMap join = new HashMap();
         join.put("CustomerId",CustomerId);
         Factory factory = new Factory(Customer.class);
@@ -42,24 +48,42 @@ public class Customer {
         return myCust;
     }
 
-    public static Vector<Customer> getWithoutAgent()
-    {
+    /*
+    Use this method to get all customers assigned to the specified agent.
+     */
+    public static Vector<Customer> getByAgentId(Integer agentId){
+        Vector<Customer> customers = new Vector<Customer>();
         HashMap join = new HashMap();
-        join.put("AgentId",null);
-        return new Vector<Customer>();
+        Factory factory = new Factory(Customer.class);
+        join.put("AgentId",agentId);
+        factory.getSelectWhere(join);
+        return factory.makeEntity();
     }
 
-    public static Vector<Customer> getAll()
-    {
+    public static Vector<Customer> getAll(){
         Factory factory = new Factory(Customer.class);
         factory.getSelectAll();
         Vector customers = factory.makeEntity();
         return customers;
     }
 
+    public static Integer add(Customer newCust){
+        Factory factory = new Factory(Customer.class);
+        return factory.Deconstruct(newCust);
+    }
+
+    public static Integer update(Customer oldBusted, Customer newHotness){
+        Factory factory = new Factory(Customer.class);
+        return factory.update(oldBusted,newHotness);
+    }
+
+    /**
+    Fields with Get Set methods
+     */
+    @Ignore
     private int CustomerId;
     public int getCustomerId() { return CustomerId; }
-    public void setCustomerId(int customerId) { CustomerId = customerId; }
+    public void setCustomerId(Integer customerId) { CustomerId = customerId; }
 
     private String CustFirstName;
     public String getCustFirstName() { return CustFirstName; }
@@ -103,7 +127,7 @@ public class Customer {
 
     private int AgentId;
     public int getAgentId() { return AgentId; }
-    public void setAgentId(int agentId) { AgentId = agentId; }
+    public void setAgentId(Integer agentId) { AgentId = agentId; }
     //TODO deal with authentication
     private String Password;
     public String getPassword() { return Password; }

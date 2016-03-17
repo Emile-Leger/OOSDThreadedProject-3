@@ -1,21 +1,23 @@
 package sample.Model;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 import java.util.HashMap;
 import java.util.Vector;
 
 /**
  * Created by Emile on 3/7/16.
  */
-public class Agent
+public class Agent implements Cloneable
 {
 
     public static final String TableName = "agents";
 
-    /*
-     * constructor with each field provided
-     * */
-    public Agent(int agentId, String agtFirstName, String agtMiddleInitial, String agtLastName,
-                 String agtBusPhone, String agtEmail, String agtPosition, int agencyId)
+    /**
+    Constructor with each field provided
+    */
+    public Agent(Integer agentId, String agtFirstName, String agtMiddleInitial, String agtLastName,
+                 String agtBusPhone, String agtEmail, String agtPosition, Integer agencyId)
     {
         this.AgentId = agentId;
         this.AgtFirstName = agtFirstName;
@@ -28,9 +30,9 @@ public class Agent
     }
     public Agent() { }
 
-    /*
-    * Agent Properties, with Get Set methods
-    * */
+    /**
+    Data Access methods
+    */
 
     public static Agent getById(int AgentId)
     {
@@ -50,8 +52,36 @@ public class Agent
         return agents;
     }
 
-    private int AgentId;
-    public void setAgentId(int agentId) { AgentId = agentId; }
+    public static Integer update(Agent oldBusted, Agent newHotness)
+    {
+        Factory factory = new Factory(Agent.class);
+        return factory.update(oldBusted,newHotness);
+    }
+
+    public static int add(Agent agent)
+    {
+        Factory factory = new Factory(Agent.class);
+        return factory.Deconstruct(agent);
+    }
+
+    public Agent clone(){
+        try
+        {
+            return (Agent) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+    Agent fields, with Get Set methods
+     */
+    @Ignore
+    private Integer AgentId;
+    public void setAgentId(Integer agentId) { AgentId = agentId; }
     public int getAgentId() { return AgentId; }
 
     private String AgtFirstName;
@@ -79,8 +109,11 @@ public class Agent
     public String getAgtPosition() { return AgtPosition; }
     public void setAgtPosition(String agtPosition) { AgtPosition = agtPosition; }
 
-    private int AgencyId;
+    private Integer AgencyId;
     public int getAgencyId() { return AgencyId; }
-    public void setAgencyId(int agencyId) { AgencyId = agencyId; }
+    public void setAgencyId(Integer agencyId) { AgencyId = agencyId; }
 
+    private Boolean isActive;
+    public Boolean getActive() { return isActive; }
+    public void setActive(Boolean active) { isActive = active; }
 }

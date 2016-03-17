@@ -1,12 +1,12 @@
 package sample.Model;
 
 /**
- * Created by user1 on 3/9/16.
+Created by Emile
  */
-public class Reward
-{
+public class Reward{
+
     public static final String TableName = "rewards";
-    /*
+    /**
     Constructors
      */
 
@@ -16,11 +16,11 @@ public class Reward
         RwdName = rwdName;
     }
     public Reward() { }
-    /*
+    /**
     Data Access Methods
      */
     //TODO Code..
-    /*
+    /**
     Fields with Get Set Methods
      */
     private int RewardId;
@@ -34,8 +34,4 @@ public class Reward
     private String RwdName;
     public String getRwdName() { return RwdName; }
     public void setRwdName(String rwdName) { RwdName = rwdName; }
-
-
-
-
 }

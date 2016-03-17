@@ -1,20 +1,23 @@
 package sample.Model;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 import java.util.HashMap;
 import java.util.Vector;
 
 /**
- * Created by user1 on 3/9/16.
+Created by Emile.
  */
 public class Agency
 {
     public static final String TableName = "agencies";
 
-    /*
+    /**
     Constructors
      */
 
-    public Agency(int agencyId, String agncyAddress, String agncyCity, String agncyCountry, String agncyFax, String agncyPhone, String agncyPostal, String agncyProv)
+    public Agency(int agencyId, String agncyAddress, String agncyCity, String agncyCountry,
+                  String agncyFax, String agncyPhone, String agncyPostal, String agncyProv)
     {
         AgencyId = agencyId;
         AgncyAddress = agncyAddress;
@@ -25,12 +28,14 @@ public class Agency
         AgncyPostal = agncyPostal;
         AgncyProv = agncyProv;
     }
-    /*
-    Data Retrieval Methods
+
+    public Agency() { }
+
+    /**
+    Data Access Methods
      */
 
-    public static Agency getById(int AgencyId)
-    {
+    public static Agency getById(int AgencyId){
         HashMap join = new HashMap();
         join.put("AgencyId",AgencyId);
         Factory factory = new Factory(Agency.class);
@@ -39,18 +44,26 @@ public class Agency
         return agency;
     }
 
-    public static Vector<Agency> getAll()
-    {
+    public static Vector<Agency> getAll(){
         Factory factory = new Factory(Agency.class);
         factory.getSelectAll();
-        Vector agencies = factory.makeEntity();
-        return agencies;
+        return factory.makeEntity();
     }
 
-    public Agency() { }
-    /*
+    public static Integer add(Agency newAgency){
+        Factory factory = new Factory(Agency.class);
+        return factory.Deconstruct(newAgency);
+    }
+
+    public static Integer update(Agency oldAgency, Agency newAgency){
+        Factory factory = new Factory(Agency.class);
+        return factory.update(oldAgency,newAgency);
+    }
+
+    /**
     Fields, each with Get Set methods attached
      */
+    @Ignore
     private int AgencyId;
     public int getAgencyId() { return AgencyId; }
     public void setAgencyId(int agencyId) { AgencyId = agencyId; }

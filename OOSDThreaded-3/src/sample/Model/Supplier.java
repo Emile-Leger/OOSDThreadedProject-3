@@ -1,25 +1,47 @@
 package sample.Model;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 import java.util.HashMap;
 import java.util.Vector;
 
 /**
- * Created by user1 on 3/9/16.
+ * Created by Emile
  */
 public class Supplier
 {
     public static final String TableName = "suppliers";
 
-    public Supplier(String supName, int supplierId) {
+    /**
+    Constructors
+     */
+    public Supplier(String supName, Integer supplierId) {
         SupName = supName;
         SupplierId = supplierId;
     }
 
-
     public Supplier() { }
 
-    public static Supplier getById(int supplierId)
-    {
+    /**
+    Data Access Methods
+     */
+
+    public static int add(Supplier supplier){
+        Factory factory = new Factory(Supplier.class);
+        return factory.Deconstruct(supplier);
+    }
+
+    public static int update(Supplier oldSupp,Supplier newSupp){
+        Factory factory = new Factory(Supplier.class);
+        return factory.update(oldSupp,newSupp);
+    }
+
+    public static boolean delete(Supplier trash){
+        Factory factory = new Factory();
+        return factory.delete(trash);
+    }
+
+    public static Supplier getById(int supplierId){
         HashMap join = new HashMap();
         join.put("SupplierId",supplierId);
         Factory factory = new Factory(Supplier.class);
@@ -28,8 +50,7 @@ public class Supplier
         return supplier;
     }
 
-    public static Vector<Supplier> getAll()
-    {
+    public static Vector<Supplier> getAll(){
         Factory factory = new Factory(Supplier.class);
         System.out.println(Supplier.class);
         factory.getSelectAll();
@@ -37,12 +58,16 @@ public class Supplier
         return suppliers;
     }
 
+    /**
+    Fields with get set Methods, Ignore attribute indicates the field corresponding to the Primary Key
+     */
+
+    @Ignore
+    private Integer SupplierId;
+    public int getSupplierId() { return SupplierId; }
+    public void setSupplierId(Integer supplierId) { SupplierId = supplierId; }
+
     private String SupName;
     public String getSupName() { return SupName; }
     public void setSupName(String supName) { SupName = supName; }
-
-    private int SupplierId;
-    public int getSupplierId() { return SupplierId; }
-    public void setSupplierId(int supplierId) { SupplierId = supplierId; }
-
 }

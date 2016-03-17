@@ -1,7 +1,7 @@
 package sample.Model;
 
 /**
- * Created by Emile on 3/9/16.
+ * Created by Emile
  */
 public class Affiliation
 {

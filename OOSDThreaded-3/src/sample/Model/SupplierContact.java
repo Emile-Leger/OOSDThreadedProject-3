@@ -1,18 +1,23 @@
 package sample.Model;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
+import java.util.HashMap;
+import java.util.Vector;
+
 /**
- * Created by user1 on 3/9/16.
+ * Created by Emile
  */
 public class SupplierContact
 {
     public static final String TableName = "suppliercontacts";
-    /*
+    /**
     Constructors
      */
 
     public SupplierContact(String affiliationId, String supConAddress, String supConBusPhone, String supConCity,
                            String supConCompany, String supConCountry, String supConEmail, String supConFax, String supConFirstName,
-                           String supConLastName, String supConPostal, String supConProv, String supConURL, int supplierContactId, int supplierId)
+                           String supConLastName, String supConPostal, String supConProv, String supConURL, Integer supplierContactId, Integer supplierId)
     {
         AffiliationId = affiliationId;
         SupConAddress = supConAddress;
@@ -30,13 +35,49 @@ public class SupplierContact
         SupplierContactId = supplierContactId;
         SupplierId = supplierId;
     }
-    /*
+    public SupplierContact(){
+
+    }
+    /**
     Data Access Methods
      */
-    //TODO Code...
-    /*
-    Fields with Get Set Methods
+    public static SupplierContact getById(int SupplierContactId)
+    {
+        HashMap join = new HashMap();
+        join.put("SupplierContactId",SupplierContactId);
+        Factory factory = new Factory(SupplierContact.class);
+        factory.getSelectWhere(join);
+        SupplierContact supplierContact = (SupplierContact) factory.makeEntity().firstElement();
+        return supplierContact;
+    }
+
+    public static Vector<SupplierContact> getAll()
+    {
+        Factory factory = new Factory(SupplierContact.class);
+        factory.getSelectAll();
+        Vector supplierContacts = factory.makeEntity();
+        return supplierContacts;
+    }
+
+    public static int add(SupplierContact supplierContact)
+    {
+        Factory factory = new Factory(SupplierContact.class);
+        return factory.Deconstruct(supplierContact);
+    }
+    public static int update(SupplierContact oldSupCon,SupplierContact newSupCon)
+    {
+        Factory factory = new Factory(SupplierContact.class);
+        return factory.update(oldSupCon,newSupCon);
+    }
+    /**
+    Fields with Get Set Methods Ignore attribute indicates the Primary key
      */
+
+    @Ignore
+    private Integer SupplierContactId;
+    public int getSupplierContactId() { return SupplierContactId; }
+    public void setSupplierContactId(Integer supplierContactId) { SupplierContactId = supplierContactId; }
+
     private String AffiliationId;
     public String getAffiliationId() { return AffiliationId; }
     public void setAffiliationId(String affiliationId) { AffiliationId = affiliationId; }
@@ -89,11 +130,7 @@ public class SupplierContact
     public String getSupConURL() { return SupConURL; }
     public void setSupConURL(String supConURL) { SupConURL = supConURL; }
 
-    private int SupplierContactId;
-    public int getSupplierContactId() { return SupplierContactId; }
-    public void setSupplierContactId(int supplierContactId) { SupplierContactId = supplierContactId; }
-
-    private int SupplierId;
+    private Integer SupplierId;
     public int getSupplierId() { return SupplierId; }
-    public void setSupplierId(int supplierId) { SupplierId = supplierId; }
+    public void setSupplierId(Integer supplierId) { SupplierId = supplierId; }
 }

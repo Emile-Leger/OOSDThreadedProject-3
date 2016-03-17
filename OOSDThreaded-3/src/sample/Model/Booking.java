@@ -42,6 +42,12 @@ public class Booking
         return booking;
     }
 
+    public static int add(Booking booking)
+    {
+        Factory factory = new Factory(Booking.class);
+        return factory.Deconstruct(booking);
+    }
+
     public static Vector<Booking> getAll()
     {
         Factory factory = new Factory(Booking.class);

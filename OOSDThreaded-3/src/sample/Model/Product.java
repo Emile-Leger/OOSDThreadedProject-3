@@ -1,19 +1,23 @@
 package sample.Model;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 import java.util.HashMap;
 import java.util.Vector;
 
 /**
- * Created by user1 on 3/9/16.
+Created by Emile
  */
-public class Product
+public class Product implements Cloneable
 {
 
     public static final String TableName = "products";
-    /*
+
+    /**
     Constructors
      */
-    public Product(String productDesc, int productId, String productName, double productRate, double productTotal, int productTypeId, int supplierId) {
+    public Product(String productDesc, int productId, String productName,
+                   double productRate, double productTotal, int productTypeId, int supplierId) {
         ProductDesc = productDesc;
         ProductId = productId;
         ProductName = productName;
@@ -24,7 +28,7 @@ public class Product
     }
     public Product() { }
 
-    /*
+    /**
     Data Access Methods
      */
     public static Product getById(int ProductId)
@@ -37,11 +41,15 @@ public class Product
         return product;
     }
 
+    public static int update(Product oldProduct, Product newProduct){
+        Factory factory = new Factory(Product.class);
+        return factory.update(oldProduct,newProduct);
+    }
+
     public static Vector<Product> getByPackageId(int packageId)
     {
         HashMap join = new HashMap();
         join.put("packageId", packageId);
-
         Factory factory = new Factory(Product.class);
         factory.getSelectWhere(join);
         Vector products = factory.makeEntity();
@@ -61,14 +69,26 @@ public class Product
         return products;
     }
 
-    /*
+    public Product clone(){
+        try
+        {
+            return (Product) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+    }
+
+    /**
     Fields with Get Set methods
      */
 
     private String ProductDesc;
     public String getProductDesc() { return ProductDesc; }
     public void setProductDesc(String productDesc) { ProductDesc = productDesc; }
-
+    @Ignore
     private int ProductId;
     public int getProductId() { return ProductId; }
     public void setProductId(int productId) { ProductId = productId; }
@@ -92,5 +112,4 @@ public class Product
     private int SupplierId;
     public int getSupplierId() { return SupplierId; }
     public void setSupplierId(int supplierId) { SupplierId = supplierId; }
-
 }
